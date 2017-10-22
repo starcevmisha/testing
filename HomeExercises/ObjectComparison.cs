@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 using NUnit.Framework;
 
 namespace HomeExercises
@@ -11,13 +12,18 @@ namespace HomeExercises
         [Category("ToRefactor")]
         public void CheckCurrentTsar()
         {
-            var actualTsar = TsarRegistry.GetCurrentTsar();
 
+
+            var actualTsar = TsarRegistry.GetCurrentTsar();
             var expectedTsar = new Person("Ivan IV The Terrible", 54, 170, 70,
                 new Person("Vasili III of Russia", 28, 170, 60, null));
 
-            actualTsar.ShouldBeEquivalentTo(expectedTsar,
-                options => options.Excluding(o => o.SelectedMemberInfo.Name == "Id"));
+            actualTsar.ShouldBeEquivalentTo(expectedTsar, Exclude("Id"));
+        }
+        private static Func<EquivalencyAssertionOptions<Person>, EquivalencyAssertionOptions<Person>> Exclude(string value)
+        {
+            return options => options.Excluding(o => o.SelectedMemberInfo.Name == value &&
+            o.SelectedMemberInfo.DeclaringType==typeof(Person) );
         }
 
         [Test]
