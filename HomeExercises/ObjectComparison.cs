@@ -16,22 +16,16 @@ namespace HomeExercises
             var expectedTsar = new Person("Ivan IV The Terrible", 54, 170, 70,
                 new Person("Vasili III of Russia", 28, 170, 60, null));
 
-            actualTsar.ShouldBeEquivalentTo(expectedTsar, opt => opt.Exclude(typeof(Person),"Id"));
+            actualTsar.ShouldBeEquivalentTo(expectedTsar, opt => opt.Exclude(typeof(Person), "Id"));
         }
 
-        public static EquivalencyAssertionOptions<Person> Exclude(this EquivalencyAssertionOptions<Person> opt, 
+        public static EquivalencyAssertionOptions<Person> Exclude(this EquivalencyAssertionOptions<Person> opt,
             Type type, string value)
         {
             return opt.Excluding(o => o.SelectedMemberInfo.Name == value &&
                                       o.SelectedMemberInfo.DeclaringType == type);
         }
 
-//        private static Func<EquivalencyAssertionOptions<Person>, EquivalencyAssertionOptions<Person>> Exclude(
-//            string value)
-//        {
-//            return options => options.Excluding(o => o.SelectedMemberInfo.Name == value &&
-//                                                     o.SelectedMemberInfo.DeclaringType == typeof(Person));
-//        }
 
         [Test]
         [Description("Альтернативное решение. Какие у него недостатки?")]
@@ -47,7 +41,7 @@ namespace HomeExercises
             Assert.True(AreEqual(actualTsar, expectedTsar));
         }
 
-        private static  bool AreEqual(Person actual, Person expected)
+        private static bool AreEqual(Person actual, Person expected)
         {
             if (actual == expected) return true;
             if (actual == null || expected == null) return false;
