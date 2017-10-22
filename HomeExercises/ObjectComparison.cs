@@ -12,7 +12,7 @@ namespace HomeExercises
         [Category("ToRefactor")]
         public void CheckCurrentTsar()
         {
-
+            //CR(epeshk): лучше переформатировать код в файле по code-style перед коммитом. Хоткей Ctrl+Alt+F (ReSharper 2.x)
 
             var actualTsar = TsarRegistry.GetCurrentTsar();
             var expectedTsar = new Person("Ivan IV The Terrible", 54, 170, 70,
@@ -20,6 +20,8 @@ namespace HomeExercises
 
             actualTsar.ShouldBeEquivalentTo(expectedTsar, Exclude("Id"));
         }
+        
+        //CR(epeshk): этот метод лучше сделать extension'ом: .ShouldBeEquivalentTo(expected, opt => opt.Exclude(typeof(Person), "Name"))
         private static Func<EquivalencyAssertionOptions<Person>, EquivalencyAssertionOptions<Person>> Exclude(string value)
         {
             return options => options.Excluding(o => o.SelectedMemberInfo.Name == value &&
