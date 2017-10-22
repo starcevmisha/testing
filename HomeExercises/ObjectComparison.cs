@@ -5,12 +5,23 @@ using NUnit.Framework;
 
 namespace HomeExercises
 {
-    public static class ObjectComparison
+    public static class ExcludeExtension
+    {
+        public static EquivalencyAssertionOptions<Person> Exclude(this EquivalencyAssertionOptions<Person> opt,
+            Type type, string value)
+        {
+            return opt.Excluding(o => o.SelectedMemberInfo.Name == value &&
+                                      o.SelectedMemberInfo.DeclaringType == type);
+        }
+    }
+
+
+    public class ObjectComparison
     {
         [Test]
         [Description("Проверка текущего царя")]
         [Category("ToRefactor")]
-        public static void CheckCurrentTsar()
+        public void CheckCurrentTsar()
         {
             var actualTsar = TsarRegistry.GetCurrentTsar();
             var expectedTsar = new Person("Ivan IV The Terrible", 54, 170, 70,
@@ -19,17 +30,10 @@ namespace HomeExercises
             actualTsar.ShouldBeEquivalentTo(expectedTsar, opt => opt.Exclude(typeof(Person), "Id"));
         }
 
-        public static EquivalencyAssertionOptions<Person> Exclude(this EquivalencyAssertionOptions<Person> opt,
-            Type type, string value)
-        {
-            return opt.Excluding(o => o.SelectedMemberInfo.Name == value &&
-                                      o.SelectedMemberInfo.DeclaringType == type);
-        }
-
 
         [Test]
         [Description("Альтернативное решение. Какие у него недостатки?")]
-        public static void CheckCurrentTsar_WithCustomEquality()
+        public void CheckCurrentTsar_WithCustomEquality()
         {
             var actualTsar = TsarRegistry.GetCurrentTsar();
             var expectedTsar = new Person("Ivan IV The Terrible", 54, 170, 70,
@@ -41,7 +45,7 @@ namespace HomeExercises
             Assert.True(AreEqual(actualTsar, expectedTsar));
         }
 
-        private static bool AreEqual(Person actual, Person expected)
+        private bool AreEqual(Person actual, Person expected)
         {
             if (actual == expected) return true;
             if (actual == null || expected == null) return false;
