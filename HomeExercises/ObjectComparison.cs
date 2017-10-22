@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 
 namespace HomeExercises
@@ -15,7 +14,9 @@ namespace HomeExercises
 
             var expectedTsar = new Person("Ivan IV The Terrible", 54, 170, 70,
                 new Person("Vasili III of Russia", 28, 170, 60, null));
-
+            
+            //CR(epeshk): давай попробуем вынести реализацию exclude по имени в отдельный метод, чтобы в следующий раз не нужно было явно использовать SelectedMemberInfo
+            //CR(epeshk): есть ли какие-то недостатки у сконфигурированного ShouldBeEquivalentTo по сравнению с AreEqual?
             actualTsar.ShouldBeEquivalentTo(expectedTsar,
                 options => options.Excluding(o => o.SelectedMemberInfo.Name == "Id"));
         }

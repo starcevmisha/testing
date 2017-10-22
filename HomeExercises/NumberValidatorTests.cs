@@ -5,9 +5,9 @@ using NUnit.Framework;
 
 namespace HomeExercises
 {
-    public class 
-        NumberValidatorTests
+    public class NumberValidatorTests
     {
+        //CR(epeshk): некоторые тесты в этом классе отличаются только тестовыми данными. Стоит обобщить их.
         [Test]
         public void TestConstructor_WithNegativePrecision_ThrowArgumentException()
         {
@@ -25,6 +25,7 @@ namespace HomeExercises
         {
             Assert.Throws<ArgumentException>(() => new NumberValidator(1, 2, true));
         }
+        //CR(epeshk): есть ли другие случаи, когда конструктор должен выбрасывать исключение?
 
         [Test]
         public void TestConstructor_WithZeroScale_DoesNotThrowException()
@@ -33,6 +34,7 @@ namespace HomeExercises
         }
 
         [Test]
+        //CR(epeshk): сравни IsAdult_AgeLessThan18_False и IsAdult_ShouldBe.False_WhenAgeLessThan18. Второй вариант выглядит более читаемым
         public void IsValid_OnEmptyString_False()
         {
             new NumberValidator(17, 2, true).IsValidNumber("").Should().BeFalse();
@@ -51,6 +53,7 @@ namespace HomeExercises
         }
 
         [Test]
+        //CR(epeshk): GoodString? Что делает строку "хорошей"? Почему аналогичный тест для "0,0" в DifferentCase?
         public void IsValid_OnGoodString_True()
         {
             new NumberValidator(17, 2, true).IsValidNumber("0.0").Should().BeTrue();
@@ -62,6 +65,7 @@ namespace HomeExercises
             new NumberValidator(17, 2, true).IsValidNumber("+0.0").Should().BeTrue();
         }
 
+        //CR(epeshk): лучше, чтобы в тесте был только один assert
         [Test]
         public void IsValid_OnGoodStringWithSpace_False()
         {
@@ -84,17 +88,20 @@ namespace HomeExercises
         [TestCase(17,2,"-0,00")]
         [TestCase(17,2,"+0.00")]
         [TestCase(17,3,"0,000")]
+        //CR(epeshk): prec -> precision
         public void IsValid_DifferentCase_True(int prec, int scale, string value)
         {
             new NumberValidator(prec, scale, false).IsValidNumber(value).Should().BeTrue();
         }
 
         [Test]
+        //CR(epeshk): Greater -> GreaterThan, Equal -> EqualTo
         public void IsValid_FractionLengthGreaterScale_False()
         {
             new NumberValidator(17, 2, false).IsValidNumber("1.23456").Should().BeFalse();
         }
         [Test]
+        //CR(epeshk): у тестов ниже сложные для чтения названия
         public void IsValid_IntAndFracLengthGreaterPrecision_False()
         {
             new NumberValidator(6, 2, false).IsValidNumber("121.23456").Should().BeFalse();
