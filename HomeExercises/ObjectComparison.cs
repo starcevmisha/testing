@@ -21,7 +21,7 @@ namespace HomeExercises
             actualTsar.ShouldBeEquivalentTo(expectedTsar, Exclude("Id"));
         }
         
-        //CR(epeshk): этот метод лучше сделать extension'ом: .ShouldBeEquivalentTo(expected, opt => opt.Exclude(typeof(Person), "Name"))
+        //CR(epeshk): этот метод лучше сделать extension'ом: .ShouldBeEquivalentTo(expected, opt => opt.Exclude(typeof(Person), "Name")), чтобы можно было комбинировать такие методы, сейчас не получится сделать, например, два exclude по имени
         private static Func<EquivalencyAssertionOptions<Person>, EquivalencyAssertionOptions<Person>> Exclude(string value)
         {
             return options => options.Excluding(o => o.SelectedMemberInfo.Name == value &&
