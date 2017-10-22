@@ -17,6 +17,7 @@ namespace HomeExercises
             
             //CR(epeshk): давай попробуем вынести реализацию exclude по имени в отдельный метод, чтобы в следующий раз не нужно было явно использовать SelectedMemberInfo
             //CR(epeshk): есть ли какие-то недостатки у сконфигурированного ShouldBeEquivalentTo по сравнению с AreEqual?
+            //CR(epeshk): как исключить из сравнения поле Id _только_ класса Person?
             actualTsar.ShouldBeEquivalentTo(expectedTsar,
                 options => options.Excluding(o => o.SelectedMemberInfo.Name == "Id"));
         }
