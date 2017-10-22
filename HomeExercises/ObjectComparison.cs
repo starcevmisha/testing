@@ -5,30 +5,37 @@ using NUnit.Framework;
 
 namespace HomeExercises
 {
-    public class ObjectComparison
+    public static class ObjectComparison
     {
         [Test]
         [Description("Проверка текущего царя")]
         [Category("ToRefactor")]
-        public void CheckCurrentTsar()
+        public static void CheckCurrentTsar()
         {
-
-
             var actualTsar = TsarRegistry.GetCurrentTsar();
             var expectedTsar = new Person("Ivan IV The Terrible", 54, 170, 70,
                 new Person("Vasili III of Russia", 28, 170, 60, null));
 
-            actualTsar.ShouldBeEquivalentTo(expectedTsar, Exclude("Id"));
+            actualTsar.ShouldBeEquivalentTo(expectedTsar, opt => opt.Exclude(typeof(Person),"Id"));
         }
-        private static Func<EquivalencyAssertionOptions<Person>, EquivalencyAssertionOptions<Person>> Exclude(string value)
+
+        public static EquivalencyAssertionOptions<Person> Exclude(this EquivalencyAssertionOptions<Person> opt, 
+            Type type, string value)
         {
-            return options => options.Excluding(o => o.SelectedMemberInfo.Name == value &&
-            o.SelectedMemberInfo.DeclaringType==typeof(Person) );
+            return opt.Excluding(o => o.SelectedMemberInfo.Name == value &&
+                                      o.SelectedMemberInfo.DeclaringType == type);
         }
+
+//        private static Func<EquivalencyAssertionOptions<Person>, EquivalencyAssertionOptions<Person>> Exclude(
+//            string value)
+//        {
+//            return options => options.Excluding(o => o.SelectedMemberInfo.Name == value &&
+//                                                     o.SelectedMemberInfo.DeclaringType == typeof(Person));
+//        }
 
         [Test]
         [Description("Альтернативное решение. Какие у него недостатки?")]
-        public void CheckCurrentTsar_WithCustomEquality()
+        public static void CheckCurrentTsar_WithCustomEquality()
         {
             var actualTsar = TsarRegistry.GetCurrentTsar();
             var expectedTsar = new Person("Ivan IV The Terrible", 54, 170, 70,
@@ -40,7 +47,7 @@ namespace HomeExercises
             Assert.True(AreEqual(actualTsar, expectedTsar));
         }
 
-        private bool AreEqual(Person actual, Person expected)
+        private static  bool AreEqual(Person actual, Person expected)
         {
             if (actual == expected) return true;
             if (actual == null || expected == null) return false;
@@ -65,11 +72,11 @@ namespace HomeExercises
 
     public class Person
     {
-        public static int IdCounter = 0;
+        public static int IdCounter;
         public int Age, Height, Weight;
+        public int Id;
         public string Name;
         public Person Parent;
-        public int Id;
 
         public Person(string name, int age, int height, int weight, Person parent)
         {
