@@ -10,7 +10,7 @@ namespace HomeExercises
         [TestCase(-1, 2, TestName = "Negative Preci sion")]
         [TestCase(1, -2, TestName = "Negative Scale")]
         [TestCase(1, 2, TestName = "Scale greater than precision")]
-//        [TestCase(-3, -2, TestName = "Negative Scale and Scale  greater than precision")]
+        [TestCase(4, 4, TestName = "Scale equal to precision")]
         public void TestConstructor_ThrowArgumentException(int prec, int scale)
         {
             Assert.Throws<ArgumentException>(() => new NumberValidator(prec, scale, true));
@@ -32,6 +32,12 @@ namespace HomeExercises
         public void TestConstructor_DoesNotThrowArgumentException_WithFlagWithoutScale()
         {
             Assert.DoesNotThrow(() => new NumberValidator(1, onlyPositive: true));
+        }
+
+        [Test]
+        public void TestConstructor_DoesNotThrowArgumentException_WithEqualScaleAndPrecisoin()
+        {
+            Assert.DoesNotThrow(() => new NumberValidator(5, 5));
         }
 
 
