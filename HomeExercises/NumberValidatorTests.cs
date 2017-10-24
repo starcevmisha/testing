@@ -16,17 +16,17 @@ namespace HomeExercises
             Assert.Throws<ArgumentException>(() => new NumberValidator(prec, scale, true));
         }
 
-        [TestCase(1,0, TestName = "With Scale Without Flag")]
-        [TestCase(5,5, TestName = "With Equal Scale And Precisoin")]
-        public void TestConstructor_DoesNotThrow_WithScaleWithoutFlag(int precision, int scale)
+        [TestCase(1, 0, TestName = "With Zero Scale Without Flag")]
+        [TestCase(5, 5, TestName = "With Equal Scale And Precisoin")]
+        public void TestConstructor_DoesNotThrow(int precision, int scale)
         {
             Assert.DoesNotThrow(() => new NumberValidator(precision, scale));
         }
 
 
-        [TestCase("12345",  ExpectedResult = true)]
-        [TestCase("-12345",  ExpectedResult = false)]
-        [TestCase("12.234",  ExpectedResult = false)]
+        [TestCase("12345", ExpectedResult = true)]
+        [TestCase("-12345", ExpectedResult = false)]
+        [TestCase("12.234", ExpectedResult = false)]
         public bool NumberValidator_TestWithDefaultArgs(string value)
         {
             return new NumberValidator(5).IsValidNumber(value);
@@ -38,7 +38,7 @@ namespace HomeExercises
         [TestCase("a.sd", TestName = "NonDigitString")]
         [TestCase(" 12.0", TestName = "Space Before number")]
         [TestCase("12.0 ", TestName = "Space after number")]
-        public void IsValidNumber_ShouldBeFalse_OnBadCase(string value)
+        public void IsValidNumber_ShouldBeFalse_On(string value)
         {
             new NumberValidator(17, 2).IsValidNumber(value).Should().BeFalse();
         }
@@ -50,11 +50,11 @@ namespace HomeExercises
         [TestCase("0,00")]
         [TestCase("00,00")]
         [TestCase("-0,00")]
-        [TestCase( "+0.00")]
+        [TestCase("+0.00")]
         [TestCase("0,000", 3)]
-        public void IsValidNumber_ShouldBeTrue_OnDifferentCase(string value, int scale=2)
+        public void IsValidNumber_ShouldBeTrue_One(string value, int scale = 2)
         {
-            new NumberValidator(17, scale, false).IsValidNumber(value).Should().BeTrue();
+            new NumberValidator(17, scale).IsValidNumber(value).Should().BeTrue();
         }
 
         [TestCase(17, 2, true, "12.34567", ExpectedResult = false,
@@ -66,7 +66,7 @@ namespace HomeExercises
         [TestCase(4, 2, false, "-1.23", ExpectedResult = true,
             TestName = "true when length of all part is equal to precision")]
         [TestCase(17, 2, true, "-1.23", ExpectedResult = false,
-            TestName = "false when Negative number when only positive flag")]
+            TestName = "false on negative number when only positive valid")]
         public bool IsValidNumber_ShouldBe(int precision, int scale, bool onlyPositive, string value)
         {
             return new NumberValidator(precision, scale, onlyPositive).IsValidNumber(value);
