@@ -17,27 +17,23 @@ namespace HomeExercises
         }
 
         [Test]
-        public void TestConstructor_DoesNotThrowArgumentException_WithFlagAndScale()
-        {
-            Assert.DoesNotThrow(() => new NumberValidator(1, 0, true));
-        }
-
-        [Test]
-        public void TestConstructor_DoesNotThrowArgumentException_WithScaleWithoutFlag()
+        public void TestConstructor_DoesNotThrow_WithScaleWithoutFlag()
         {
             Assert.DoesNotThrow(() => new NumberValidator(1, 0));
-        }
-
-        [Test]
-        public void TestConstructor_DoesNotThrowArgumentException_WithFlagWithoutScale()
-        {
-            Assert.DoesNotThrow(() => new NumberValidator(1, onlyPositive: true));
         }
 
         [Test]
         public void TestConstructor_DoesNotThrowArgumentException_WithEqualScaleAndPrecisoin()
         {
             Assert.DoesNotThrow(() => new NumberValidator(5, 5));
+        }
+
+        [TestCase("12345",  ExpectedResult = true)]
+        [TestCase("-12345",  ExpectedResult = false)]
+        [TestCase("12.234",  ExpectedResult = false)]
+        public bool NumberValidator_TestWithDefaultArgs(string value)
+        {
+            return new NumberValidator(5).IsValidNumber(value);
         }
 
 
