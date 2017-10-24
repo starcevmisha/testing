@@ -44,17 +44,11 @@ namespace HomeExercises
         [TestCase("", TestName = "EmptyString")]
         [TestCase(null, TestName = "Null")]
         [TestCase("a.sd", TestName = "NonDigitString")]
+        [TestCase(" 12.0", TestName = "Space Before number")]
+        [TestCase("12.0 ", TestName = "Space after number")]
         public void IsValidNumber_ShouldBeFalse_OnBadCase(string value)
         {
             new NumberValidator(17, 2).IsValidNumber(value).Should().BeFalse();
-        }
-
-
-        [TestCase(" 12.0", TestName = "Space Before number")]
-        [TestCase("12.0 ", TestName = "Space after number")]
-        public void IsValidNumber_ShouldBeFalse_OnStringWithSpace(string value)
-        {
-            new NumberValidator(17, 2, true).IsValidNumber(value).Should().BeFalse();
         }
 
 
@@ -72,16 +66,16 @@ namespace HomeExercises
         }
 
         [TestCase(17, 2, true, "12.34567", ExpectedResult = false,
-            TestName = "IsValidNumber should be false when length of fraction part greater than scale")]
+            TestName = "be false when length of fraction part greater than scale")]
         [TestCase(6, 4, true, "121.2345", ExpectedResult = false,
-            TestName = "IsValidNumber should be false when length of fraction and integer part greater than precision")]
+            TestName = "be false when length of fraction and integer part greater than precision")]
         [TestCase(3, 2, false, "-1.23", ExpectedResult = false,
-            TestName = "IsValidNumber should be false when length of all part greater than precision")]
+            TestName = "be false when length of all part greater than precision")]
         [TestCase(4, 2, false, "-1.23", ExpectedResult = true,
-            TestName = "IsValidNumber should be true when length of all part is equal to precision")]
+            TestName = "be true when length of all part is equal to precision")]
         [TestCase(17, 2, true, "-1.23", ExpectedResult = false,
-            TestName = "IsValidNumber should be false when Negative number when only positive flag")]
-        public bool ValidateNumber(int precision, int scale, bool onlyPositive, string value)
+            TestName = "be false when Negative number when only positive flag")]
+        public bool IsValidNumber_ShouldBe(int precision, int scale, bool onlyPositive, string value)
         {
             return new NumberValidator(precision, scale, onlyPositive).IsValidNumber(value);
         }
