@@ -16,17 +16,13 @@ namespace HomeExercises
             Assert.Throws<ArgumentException>(() => new NumberValidator(prec, scale, true));
         }
 
-        [Test]
-        public void TestConstructor_DoesNotThrow_WithScaleWithoutFlag()
+        [TestCase(1,0, TestName = "With Scale Without Flag")]
+        [TestCase(5,5, TestName = "With Equal Scale And Precisoin")]
+        public void TestConstructor_DoesNotThrow_WithScaleWithoutFlag(int precision, int scale)
         {
-            Assert.DoesNotThrow(() => new NumberValidator(1, 0));
+            Assert.DoesNotThrow(() => new NumberValidator(precision, scale));
         }
 
-        [Test]
-        public void TestConstructor_DoesNotThrowArgumentException_WithEqualScaleAndPrecisoin()
-        {
-            Assert.DoesNotThrow(() => new NumberValidator(5, 5));
-        }
 
         [TestCase("12345",  ExpectedResult = true)]
         [TestCase("-12345",  ExpectedResult = false)]
@@ -48,29 +44,29 @@ namespace HomeExercises
         }
 
 
-        [TestCase(17, 2, "0,0")]
-        [TestCase(17, 2, "0")]
-        [TestCase(17, 2, "+0")]
-        [TestCase(17, 2, "0,00")]
-        [TestCase(17, 2, "00,00")]
-        [TestCase(17, 2, "-0,00")]
-        [TestCase(17, 2, "+0.00")]
-        [TestCase(17, 3, "0,000")]
-        public void IsValidNumber_ShouldBeTrue_OnDifferentCase(int precisison, int scale, string value)
+        [TestCase("0,0")]
+        [TestCase("0")]
+        [TestCase("+0")]
+        [TestCase("0,00")]
+        [TestCase("00,00")]
+        [TestCase("-0,00")]
+        [TestCase( "+0.00")]
+        [TestCase("0,000", 3)]
+        public void IsValidNumber_ShouldBeTrue_OnDifferentCase(string value, int scale=2)
         {
-            new NumberValidator(precisison, scale, false).IsValidNumber(value).Should().BeTrue();
+            new NumberValidator(17, scale, false).IsValidNumber(value).Should().BeTrue();
         }
 
         [TestCase(17, 2, true, "12.34567", ExpectedResult = false,
-            TestName = "be false when length of fraction part greater than scale")]
+            TestName = "false when length of fraction part greater than scale")]
         [TestCase(6, 4, true, "121.2345", ExpectedResult = false,
-            TestName = "be false when length of fraction and integer part greater than precision")]
+            TestName = "false when length of fraction and integer part greater than precision")]
         [TestCase(3, 2, false, "-1.23", ExpectedResult = false,
-            TestName = "be false when length of all part greater than precision")]
+            TestName = "false when length of all part greater than precision")]
         [TestCase(4, 2, false, "-1.23", ExpectedResult = true,
-            TestName = "be true when length of all part is equal to precision")]
+            TestName = "true when length of all part is equal to precision")]
         [TestCase(17, 2, true, "-1.23", ExpectedResult = false,
-            TestName = "be false when Negative number when only positive flag")]
+            TestName = "false when Negative number when only positive flag")]
         public bool IsValidNumber_ShouldBe(int precision, int scale, bool onlyPositive, string value)
         {
             return new NumberValidator(precision, scale, onlyPositive).IsValidNumber(value);
