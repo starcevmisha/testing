@@ -1,5 +1,9 @@
 language: csharp
 solution: testing.sln
-install:
-  - nuget restore testing.sln
+before_install:
+  - sudo apt-get install nunit-console
+  before_script:
+  - nuget restore solution-name.sln
+after_script:
+  - nunit-console ./HomeExercises/bin/Release/ObjectComparison.dll
 
