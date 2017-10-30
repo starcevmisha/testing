@@ -17,7 +17,6 @@ namespace HomeExercises
         }
 
         [TestCase(1, 0, TestName = "With Zero Scale Without Flag")]
-        [TestCase(5, 5, TestName = "With Equal Scale And Precisoin")]
         public void TestConstructor_DoesNotThrow(int precision, int scale)
         {
             Assert.DoesNotThrow(() => new NumberValidator(precision, scale));
