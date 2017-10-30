@@ -1,8 +1,9 @@
 language: csharp
 solution: testing.sln
-install:
+before_install:
   - sudo apt-get install nunit-console
+before_script:
   - nuget restore testing.sln
-script:
+after_script:
   - nunit-console ./HomeExercises/bin/Release/ObjectComparison.dll
   - nunit-console ./HomeExercises/bin/Release/NumberValidatorTests.dll
