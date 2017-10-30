@@ -1,1 +1,5 @@
-language: c#
+language: csharp
+solution: testing.sln
+install:
+  - nuget restore testing.sln
+
